@@ -1,0 +1,13 @@
+## Interface: 16001
+## Title: Polestar Community: Shen'dralas
+## Title-zhCN: Polestar 社区指南：辛德拉
+## Notes-zhCN: 辛德拉野外主线、半人马支线与副本前置
+## Author: Codex
+## Version: 0.1.0
+## Dependencies: Polestar
+## X-Polestar-Pack: shendralas
+## X-Polestar-Format: 5
+## X-Polestar-Needs: 0.3.7.2
+## X-License: MIT
+
+Guides.lua

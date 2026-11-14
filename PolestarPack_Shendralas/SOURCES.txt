@@ -1,0 +1,26 @@
+辛德拉（Shen'dralas）Polestar 社区指南 0.1.0
+适用《魔兽世界：无限》、Polestar 0.3.7.2。解压后应只有一个 PolestarPack_Shendralas 插件目录，和 Polestar 放在同一 AddOns 目录。进入游戏后用 /polestar guides 搜「辛德拉」。先打开「野外主线」。半人马按自己的选择开对应指南，组队打玛拉顿、剃刀高地时开专项。优先显示游戏识别的任务和 NPC 名称，未识别时回退到英文，步骤说明为简中。
+
+野外建议约 38–45 级。可选精英和武器线接入日志后会追踪，玩家可用 Polestar 右键跳过和恢复。武器任务 93450 有玩家报告需带任务剑死亡并释放灵魂，硬核角色应跳过。日记、项圈、项链和外壳只提供已接任务的交付，拾到手动右键接取。暂无掉落来源或坐标时使用区域提示或游戏追踪。不会要求凑齐任何随机掉落才能推进主线。
+两条部族线从谷口前置接续，之前另做凄凉之地 1373（吉尔吉斯）或 92743（马格拉姆）。数据库对部分任务的阵营字段存在差异，以 NPC 实际提供为准；尊敬是任务目标，路线代码不强制刷声望。选择前注意会损失对立部族声望。
+副本专项从水晶塔起步，完成 93594 后先去玛拉顿取水，回花园灭火，再进剃刀高地采血。最后的花束任务按游戏是否提供，获得可接任务的项链后手动接取。副本目标箭头是外部入口；副本内操作见对应步骤。两个副本的任务建议按队伍实际等级安排。
+若启用了 Polestar 自动接取，NPC 当前提供的可选任务也可能被接入日志。
+仍待实服验收：整段导航和路线耗时、部分动态刷新点、半人马跨阵营可接范围、93450 是否受到 99258 的额外门槛、93606 的实际提供、第三方数据未覆盖的同名任务 93451 与跨区隐藏任务。此版本只覆盖可确认的练级链路和四个拾取任务交付。
+
+资料
+暴雪区域出处：https://news.blizzard.com/en-us/article/24304071
+当前任务顺序对照：https://wow4ever.quest/en/articles/shendralas-guia-zona-wow-forever
+QuestieDB 1.1.1 Forever 玩家捕获数据（任务 ID、接交人、前置、地图 2652；区域 ID 16651）：https://github.com/Questie/QuestieDB
+ForeverChanges 玩家记录（接交和主链）：https://foreverchanges.pro/quest/92914/strange-pylons
+Wowhead Forever 玩家记录（塔位、层数、法力筛和修复）：https://www.wowhead.com/forever/quest=92914/strange-pylons 、https://www.wowhead.com/forever/quest=96018/powering-the-pylons
+消耗与任务道具：https://www.wowhead.com/forever/item=271882/pile-of-pylon-parts
+客户端缓存对照水晶塔目标顺序：https://db.icy-veins.com/wow-forever/quests/92914 、https://db.icy-veins.com/wow-forever/quests/96018
+野外武器机制、精英和花园计数：https://www.wowhead.com/forever/quest=93450/phantasmal-problems 、https://www.wowhead.com/forever/quest=99258/mana-mania 、https://db.icy-veins.com/wow-forever/quests/93341 、https://www.wowhead.com/forever/quest=93362/what-theyve-done-to-my-peonies
+谷口声望目标和数量：https://www.wowhead.com/forever/quest=93034/valley-of-bones 、https://www.wowhead.com/forever/quest=92841/valley-of-bones 、https://www.wowhead.com/forever/quest=92844/mountain-of-bones 、https://www.wowhead.com/forever/quest=92873/proof-of-concept
+玛拉顿与剃刀高地玩家记录：https://www.wowhead.com/forever/fr/quest=93404/rot-and-regret 、https://www.wowhead.com/forever/quest=93604/agamaggans-blood
+副本入口：https://wowbocho.com/forever/dungeon/maraudon/ 、https://wowhandbook.com/zones/dungeons/razorfen-downs/
+原生指南格式：https://polestar.guide/docs/authors/guide-format
+碎片玩家坐标：https://www.wowhead.com/forever/de/quest=96010/die-fragmente-der-pylonen
+法袍、颅骨和补给任务原文：https://www.wowhead.com/forever/quest=93037/outing-outcasts 、https://db.icy-veins.com/wow-forever/quests/93041 、https://db.icy-veins.com/wow-forever/quests/93129
+吉尔吉斯池塘仪式玩家记录：https://www.wowhead.com/forever/quest=93045/test-your-theory
+花束计数和交付：https://www.wowhead.com/forever/quest=93606/not-on-squealing-terms
