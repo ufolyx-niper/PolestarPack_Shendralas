@@ -5,7 +5,7 @@ if not Polestar.RegisterPack({
     id = pack,
     title = "辛德拉",
     author = "Codex",
-    version = "0.1.0",
+    version = "0.1.1",
     format = 5,
     license = "MIT",
     source = "WoW Forever quest observations and QuestieDB 1.1.1. See SOURCES.txt.",
@@ -162,6 +162,7 @@ end
 local function approach(outdoor)
     local start = point(accept(92914), western)
     start.object, start.objName = 577959, "Shen'dralar Pylon"
+    start.note = "西塔附近的谷口和道路有巡逻精英：45级食腐者（Corpsefeeder）和43级初生的水晶塔守卫（Nascent Pylon Protector）。马格拉姆死灵可汗也是45级精英，是否主动攻击取决于你与马格拉姆的声望。等巡逻走开再靠近西塔。"
     local steps = {
         step("从凄凉之地南下，接西水晶塔任务", start),
         step("调查西塔",
@@ -169,17 +170,17 @@ local function approach(outdoor)
                 note = "接任务后看西塔探索是否已计入。"}, western)),
         step("调查棘背营地东塔",
             point({t = "interact", quest = 92914, oi = 2, object = 577960, objName = "Shen'dralar Pylon",
-                note = "东塔附近野猪人与元素密集，逐组清过去。"}, eastern)),
+                note = "从棘背营地西侧靠近东塔，沿路留意45级食腐者巡逻。营地南侧有43级精英 Kog'thug 和护卫，绕开南侧。"}, eastern)),
         step("下到主殿底层找神殿塔",
-            complete(92914, temple, "神殿塔约在 47, 78 的主殿底层，按日志确认三塔已调查。")),
+            complete(92914, temple, "从东塔向南去神殿时走在野猪人护卫西侧。主殿守卫是中立的，可以绕过。神殿塔约在 47, 78 的主殿底层，按日志确认三塔已调查。")),
         step("向莫丹特回报", turnin(92914, mordent)),
         step("接取寻找水晶塔碎片", accept(96010, mordent)),
         step("在马格拉姆村找水晶塔碎片",
             collect(96010, 255656, "Pylon Fragment", 1, {desolace, 67.9, 78.9},
-                "玩家记录在凄凉之地 67.9, 78.9。注意附近守卫，敌对时从外围清进去。")),
+                "玩家记录在凄凉之地 67.9, 78.9。马格拉姆守卫是否敌对取决于部族声望。若敌对，避开守卫，从村子外围靠近碎片。")),
         step("在吉尔吉斯村找水晶塔残片",
             collect(96010, 255657, "Pylon Shard", 2, {desolace, 36.2, 85.9},
-                "玩家记录在凄凉之地 36.2, 85.9。确认两项都亮起，再回辛德拉。")),
+                "玩家记录在凄凉之地 36.2, 85.9。吉尔吉斯守卫是否敌对取决于部族声望，敌对时从外围靠近。确认两项都亮起，再回辛德拉。")),
         step("回辛德拉交齐两块碎片", turnin(96010, mordent)),
         step("从莫丹特接修塔任务", accept(96018, mordent)),
         step("到神殿上层拿法力筛",
@@ -196,14 +197,20 @@ local function approach(outdoor)
         add(steps, step("如果已接破旧日记，在此顺手交", turnin(93644, mordent)))
     end
     add(steps,
-        step("向莫丹特了解水晶塔的历史", accept(93016, mordent), turnin(93016, mordent)),
+        {
+            title = "向莫丹特了解水晶塔的历史",
+            goals = {accept(93016, mordent), turnin(93016, mordent)},
+            note = "接取历史课后，再和莫丹特交谈一次，选对话听他讲完。任务日志里的交谈目标完成后，再找他交任务。",
+        },
         step("接取会见魔导师", accept(93394, mordent)),
         step("进神殿找魔导师基兰迪斯", turnin(93394, kirandis)))
     return steps
 end
 
+local entryNote = "联盟从尼耶尔前哨站往南，沿凄凉之地东侧道路到马格拉姆村附近进白骨之谷。部落从葬影村沿凄凉之地南缘向东，或从菲拉斯莫沙彻营地沿路北上进凄凉之地，再由白骨之谷进图。已在辛德拉可直接去西水晶塔 43.7, 34.4。"
+
 local main = {instruction("辛德拉 · 野外主线",
-    "建议 38–45 级。从凄凉之地南面沿白骨之谷道路进入辛德拉，第一站在西水晶塔 43.7, 34.4。联盟部落都可跟这条线。半人马支线可按已选部族另开，组好队后可切换玛拉顿专项。日记、项圈、项链和外壳拾到后手动右键接取。想暂缓可右键任务行跳过，之后恢复。")}
+    "建议 38–45 级。" .. entryNote .. "半人马支线可按已选部族另开，组好队后可切换玛拉顿专项。日记、项圈、项链和外壳拾到后手动右键接取。想暂缓可右键任务行跳过，之后恢复。")}
 for _, entry in ipairs(approach(true)) do main[#main + 1] = entry end
 add(main,
     step("在神殿接花园、水晶心脏与可选武器线",
@@ -314,7 +321,7 @@ local magram = {
 }
 
 local dungeon = {instruction("辛德拉 · 玛拉顿与剃刀高地",
-    "从水晶塔开始补齐神殿与花园前置。已完成的前置会按游戏记录跳过。到 Woodwyrd 后先做玛拉顿的取水灭火，再开启剃刀高地的采血。玛拉顿要走到公主附近水池，建议组队。")}
+    entryNote .. "从水晶塔开始补齐神殿与花园前置。已完成的前置会按游戏记录跳过。到 Woodwyrd 后先做玛拉顿的取水灭火，再开启剃刀高地的采血。玛拉顿要走到公主附近水池，建议组队。")}
 for _, entry in ipairs(approach(false)) do dungeon[#dungeon + 1] = entry end
 add(dungeon,
     step("从神殿的 Mithera 接调查花园", accept(93341, mithera)),
