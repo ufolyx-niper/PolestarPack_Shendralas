@@ -5,7 +5,7 @@ if not Polestar.RegisterPack({
     id = pack,
     title = "辛德拉",
     author = "Codex",
-    version = "0.1.1",
+    version = "0.1.2",
     format = 5,
     license = "MIT",
     source = "WoW Forever quest observations and QuestieDB 1.1.1. See SOURCES.txt.",
@@ -147,6 +147,12 @@ local function step(title, ...)
     return {title = title, goals = {...}}
 end
 
+local function readyTurnin(title, id, npc)
+    local row = step(title, turnin(id, npc))
+    row.when = {{k = "complete", q = id}}
+    return row
+end
+
 local function instruction(title, note, action)
     return {title = title, note = note, goals = {{t = "task", text = action or "读完后勾选，开始路线"}}}
 end
@@ -197,17 +203,18 @@ local function approach(outdoor)
         add(steps, step("如果已接破旧日记，在此顺手交", turnin(93644, mordent)))
     end
     add(steps,
-        {
-            title = "向莫丹特了解水晶塔的历史",
-            goals = {accept(93016, mordent), turnin(93016, mordent)},
-            note = "接取历史课后，再和莫丹特交谈一次，选对话听他讲完。任务日志里的交谈目标完成后，再找他交任务。",
-        },
+        step("向莫丹特接取历史课", accept(93016, mordent)),
+        step("听莫丹特讲完水晶塔的历史",
+            endpoint(complete(93016, nil, "再与莫丹特交谈，选择对话听他讲完，等任务日志显示可以交付。"), mordent)),
+        readyTurnin("向莫丹特交付历史课", 93016, mordent),
         step("接取会见魔导师", accept(93394, mordent)),
         step("进神殿找魔导师基兰迪斯", turnin(93394, kirandis)))
     return steps
 end
 
 local entryNote = "联盟从尼耶尔前哨站往南，沿凄凉之地东侧道路到马格拉姆村附近进白骨之谷。部落从葬影村沿凄凉之地南缘向东，或从菲拉斯莫沙彻营地沿路北上进凄凉之地，再由白骨之谷进图。已在辛德拉可直接去西水晶塔 43.7, 34.4。"
+
+local manaGuideHint = "组好队后可用 /polestar guides 搜「法力狂潮」，在新标签页打开组队指南，完成后切回主线。"
 
 local main = {instruction("辛德拉 · 野外主线",
     "建议 38–45 级。" .. entryNote .. "半人马支线可按已选部族另开，组好队后可切换玛拉顿专项。日记、项圈、项链和外壳拾到后手动右键接取。想暂缓可右键任务行跳过，之后恢复。")}
@@ -225,7 +232,9 @@ add(main,
     step("回神殿交底座调查，接下一轮", turnin(93341, mithera)),
     step("接植物清理与寻找 Woodwyrd", accept(93362, mithera), accept(93594, mithera)),
     step("交幽灵之刃并接矿石任务", turnin(93450, vindael), accept(93546, vindael)),
-    step("交水晶心脏，按队伍情况接精英", turnin(99257, biraxas), accept(99258, biraxas, true)),
+    step("交水晶心脏，可顺手接法力狂潮",
+        turnin(99257, biraxas), accept(99258, biraxas, true), {t = "note",
+        text = "可以现在找比拉克萨斯接任务，留在日志里继续主线。也可以以后再来接。" .. manaGuideHint}),
     step("如果已接项圈或项链，顺路交给神殿 NPC",
         turnin(93568, liranne), turnin(93609, mithera)),
     step("到花园清理三种植物",
@@ -235,10 +244,7 @@ add(main,
     step("在花园找到 Woodwyrd", turnin(93594, woodwyrd)),
     step("沿途找幽灵铁矿脉",
         complete(93546, nil, "在辛德拉找 Spectral Iron Deposit，收齐 10 份。矿脉精确分布待验证，留意游戏任务地图。")),
-    step("在不稳定法力裂隙召唤精英（可选）",
-        kill(99258, 276401, "Nascent Pylon Protector", 1, 1, nil,
-            "组队后在不稳定法力裂隙旁使用任务给的耗尽水晶心脏，击杀召出的精英。")),
-    step("回神殿交植物、矿石与已完成的精英", turnin(93362, mithera), turnin(93546, vindael), turnin(99258, biraxas)),
+    step("回神殿交植物与矿石", turnin(93362, mithera), turnin(93546, vindael)),
     step("接武器试炼", accept(96060, vindael)),
     step("对辛德拉野生动物使用幽灵之刃",
         complete(96060, nil, "用任务提供的幽灵之刃完成 8 次处决。跟随任务日志提示，注意先削弱目标。")),
@@ -246,8 +252,17 @@ add(main,
     step("如果已接食腐者外壳，交给野猪人",
         turnin(93574, kogthug)),
     instruction("接续玛拉顿或半人马支线",
-        "在指南列表搜索「辛德拉」可开玛拉顿与剃刀高地专项，或打开你已选的半人马线路。", "勾选结束野外主线")
+        "在指南列表搜索「辛德拉」可开玛拉顿与剃刀高地专项，或打开你已选的半人马线路。" .. manaGuideHint,
+        "勾选结束野外主线")
 )
+
+local manaMania = {
+    step("找比拉克萨斯接法力狂潮", accept(99258, biraxas)),
+    step("组队在不稳定法力裂隙召唤并击杀精英",
+        kill(99258, 276401, "Nascent Pylon Protector", 1, 1, nil,
+            "组队后在不稳定法力裂隙旁使用任务给的耗尽水晶心脏，击杀召出的精英。")),
+    readyTurnin("回神殿找比拉克萨斯交法力狂潮", 99258, biraxas),
+}
 
 local gelkis = {
     instruction("吉尔吉斯 · 出发前",
@@ -365,7 +380,8 @@ local function register(id, title, category, lower, upper, why, steps)
     })
 end
 
-register("leveling", "野外主线", "Leveling", 38, 45, "从水晶塔做到神殿与花园，附武器和精英任务。", main)
+register("leveling", "野外主线", "Leveling", 38, 45, "从水晶塔做到神殿与花园，附武器线和可选精英接取。", main)
+register("mana-mania", "法力狂潮（组队）", "Miscellaneous", 43, 52, "交完水晶心脏后，组队接取、击杀并交付法力狂潮。", manaMania)
 register("gelkis", "吉尔吉斯半人马", "Miscellaneous", 38, 45, "从凄凉之地谷口前置做到击杀可汗。", gelkis)
 register("magram", "马格拉姆半人马", "Miscellaneous", 40, 46, "从凄凉之地谷口前置做到复活可汗。", magram)
 register("dungeons", "玛拉顿与剃刀高地", "Miscellaneous", 43, 52, "补齐水晶塔与花园前置，再做取水与采血。", dungeon)
