@@ -1,5 +1,7 @@
 # Polestar 辛德拉指南
 
+0.1.3 版：野外主线和副本前置在每次修塔前按背包检查四枚凝聚法力水晶。西塔由南侧道路接近，修完西塔后沿路补东塔材料。已修理、可交付或已跳过的任务会收起备料提示。
+
 《魔兽世界：无限》辛德拉（Shen'dralas）的简体中文任务指南。需要先安装 [Polestar Guides](https://www.curseforge.com/wow/addons/polestar) 0.4.1 或更新版本。
 
 - 野外主线建议 38–45 级，包含水晶塔、神殿、花园和可跳过的武器线。交「水晶心脏」时可顺手接「法力狂潮」(99258)，接了可以直接继续主线。
@@ -16,4 +18,4 @@
 
 也可以从 [Releases](https://github.com/ufolyx-niper/PolestarPack_Shendralas/releases/latest) 下载以 `-forever.zip` 结尾的附件，解压到 Forever 客户端的 `Interface/AddOns`。
 
-任务前置、坐标来源和已知限制见 [包内说明](PolestarPack_Shendralas/SOURCES.txt)。0.1.2 已在 Polestar 0.4.1 和 0.4.1.1 上通过离线验证，部分半人马任务能否接取以游戏内 NPC 实际提供为准。
+任务前置、坐标来源和已知限制见 [包内说明](PolestarPack_Shendralas/SOURCES.txt)。0.1.3 已在 Polestar 0.4.1、0.4.1.1 和 0.4.2.1 上通过离线验证，部分半人马任务能否接取以游戏内 NPC 实际提供为准。

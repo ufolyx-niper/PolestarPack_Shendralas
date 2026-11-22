@@ -3,7 +3,7 @@
 ## Title-zhCN: Polestar 社区指南：辛德拉
 ## Notes-zhCN: 辛德拉野外主线、半人马支线与副本前置
 ## Author: Codex
-## Version: 0.1.2
+## Version: 0.1.3
 ## Dependencies: Polestar
 ## X-Polestar-Pack: shendralas
 ## X-Polestar-Format: 5

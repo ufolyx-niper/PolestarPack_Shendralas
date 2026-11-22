@@ -1,4 +1,4 @@
-辛德拉（Shen'dralas）Polestar 社区指南 0.1.2
+辛德拉（Shen'dralas）Polestar 社区指南 0.1.3
 适用《魔兽世界：无限》、Polestar 0.4.1 或更新版本。解压后应只有一个 PolestarPack_Shendralas 插件目录，和 Polestar 放在同一 AddOns 目录。进入游戏后用 /polestar guides 搜「辛德拉」。先打开「野外主线」。半人马按自己的选择开对应指南，组队打玛拉顿、剃刀高地时开专项。优先显示游戏识别的任务和 NPC 名称，未识别时回退到英文，步骤说明为简中。
 
 野外建议约 38–45 级。交「水晶心脏」时可接「法力狂潮」(99258)，然后继续野外主线。组好队后可用 /polestar guides 搜「法力狂潮」并在新标签页打开组队指南，按已接取、已击杀等日志状态继续，再切回主线标签页。武器线可用 Polestar 右键跳过和恢复。武器任务 93450 有玩家报告需带任务剑死亡并释放灵魂，硬核角色应跳过。日记、项圈、项链和外壳只提供已接任务的交付，拾到手动右键接取。暂无掉落来源或坐标时使用区域提示或游戏追踪。不会要求凑齐任何随机掉落才能推进主线。
@@ -24,3 +24,6 @@ Wowhead Forever 玩家记录（塔位、层数、法力筛和修复）：https:/
 法袍、颅骨和补给任务原文：https://www.wowhead.com/forever/quest=93037/outing-outcasts 、https://db.icy-veins.com/wow-forever/quests/93041 、https://db.icy-veins.com/wow-forever/quests/93129
 吉尔吉斯池塘仪式玩家记录：https://www.wowhead.com/forever/quest=93045/test-your-theory
 花束计数和交付：https://www.wowhead.com/forever/quest=93606/not-on-squealing-terms
+
+本次任务进度、前置与位置核对参考 Polestar v0.4.2.1 正式包及其任务数据库。
+https://github.com/fitzforge/polestar/releases/tag/v0.4.2.1

@@ -5,7 +5,7 @@ if not Polestar.RegisterPack({
     id = pack,
     title = "辛德拉",
     author = "Codex",
-    version = "0.1.2",
+    version = "0.1.3",
     format = 5,
     license = "MIT",
     source = "WoW Forever quest observations and QuestieDB 1.1.1. See SOURCES.txt.",
@@ -165,6 +165,20 @@ end
 
 -- Rebuild shared steps per registration. Polestar may attach per-guide data to
 -- the goal tables. The optional journal hand-in belongs only to the outdoor run.
+local repairSupplies = {}
+local function crystals(index, x, y)
+    local goal = point({t = "collect", item = 255667, itemName = "Coalesced Mana Crystal",
+        count = 4, npc = 264149, npcName = "Unstable Mana Rift",
+        note = "对道路上漂浮的不稳定法力裂隙使用法力筛，每座未修的塔消耗四枚水晶。"}, {zone, x, y})
+    local row = step(index == 2 and "西塔前 · 收集四枚水晶" or "去东塔途中 · 补齐四枚水晶", goal)
+    if index == 2 then
+        add(row.goals, point({t = "goto", text = "西塔南侧道路", r = 10,
+            note = "沿南侧道路接近。守卫挡路时逐只拉下来，从塔西侧修理，避开东侧的精英巡逻。"}, {zone, 43.9, 37.0}))
+    end
+    repairSupplies[row] = index
+    return row
+end
+
 local function approach(outdoor)
     local start = point(accept(92914), western)
     start.object, start.objName = 577959, "Shen'dralar Pylon"
@@ -191,12 +205,14 @@ local function approach(outdoor)
         step("从莫丹特接修塔任务", accept(96018, mordent)),
         step("到神殿上层拿法力筛",
             collect(96018, 255662, "Mana Sieve", 1, sieve, "法力筛在神殿上层约 46.1, 78.1。")),
+        crystals(2, 46.32, 42.94),
         step("修西水晶塔",
             point({t = "use", quest = 96018, oi = 2, item = 271882, itemName = "Pile of Pylon Parts",
-                note = "带筛子到野外法力球的爆发处收集凝聚法力水晶。两座塔共需 8 枚。到西塔旁使用背包里的修塔零件，耗 4 枚。"}, western)),
+                note = "从西侧贴近塔，使用背包里的修塔零件，消耗四枚水晶。沿谷道东行时再用法力筛补齐下一塔的四枚。"}, western)),
+        crystals(3, 45.32, 37.82),
         step("修东水晶塔",
             point({t = "use", quest = 96018, oi = 3, item = 271882, itemName = "Pile of Pylon Parts",
-                note = "到东塔旁再次使用修塔零件，耗 4 枚。水晶不足就先沿途找法力球。"}, eastern)),
+                note = "到东塔旁再次使用修塔零件，耗 4 枚。水晶不足时，沿路对不稳定法力裂隙使用法力筛。"}, eastern)),
         step("返回莫丹特，交付修塔", turnin(96018, mordent)),
     }
     if outdoor then
@@ -364,8 +380,9 @@ add(dungeon,
 )
 
 local function register(id, title, category, lower, upper, why, steps)
-    Polestar.RegisterGuide({
-        id = pack .. "/" .. id,
+    local guideId = pack .. "/" .. id
+    local ok = Polestar.RegisterGuide({
+        id = guideId,
         pack = pack,
         title = "辛德拉 · " .. title,
         category = category,
@@ -378,6 +395,12 @@ local function register(id, title, category, lower, upper, why, steps)
         why = why,
         steps = steps,
     })
+    if ok then
+        for i, row in ipairs(steps) do
+            local oi = repairSupplies[row]
+            if oi then repairSupplies[row] = {guide = guideId, repair = i + 1, oi = oi} end
+        end
+    end
 end
 
 register("leveling", "野外主线", "Leveling", 38, 45, "从水晶塔做到神殿与花园，附武器线和可选精英接取。", main)
@@ -385,3 +408,37 @@ register("mana-mania", "法力狂潮（组队）", "Miscellaneous", 43, 52, "交
 register("gelkis", "吉尔吉斯半人马", "Miscellaneous", 38, 45, "从凄凉之地谷口前置做到击杀可汗。", gelkis)
 register("magram", "马格拉姆半人马", "Miscellaneous", 40, 46, "从凄凉之地谷口前置做到复活可汗。", magram)
 register("dungeons", "玛拉顿与剃刀高地", "Miscellaneous", 43, 52, "补齐水晶塔与花园前置，再做取水与采血。", dungeon)
+
+-- Inventory is spent after each repair. The quest log identifies which tower still needs it.
+local hidden = {factions = {"!Horde", "!Alliance"}}
+local function refreshSupplies()
+    local C = Polestar.Compat
+    local state = Polestar.CharState()
+    if type(state) ~= "table" then return end
+    local active = C.IsOnQuest(96018) and not C.IsQuestCompleted(96018)
+        and not C.IsQuestReadyForTurnIn(96018) and (C.GetItemCount(255662) or 0) > 0
+        and not (state.skippedQuests and state.skippedQuests[96018])
+    local objectives = active and C.GetQuestObjectives(96018)
+    local changed = false
+    for row, link in pairs(repairSupplies) do
+        if type(link) == "table" then
+            local objective = objectives and objectives[link.oi]
+            local skips = state.skipped and state.skipped[link.guide]
+            local visible = active and objective and not objective.finished
+                and not (skips and skips[link.repair])
+            local only
+            if not visible then only = hidden end
+            if row.only ~= only then row.only, changed = only, true end
+        end
+    end
+    local engine = Polestar.Engine
+    local current = engine and engine.GetGuide()
+    if changed and current and current.pack == pack then engine.RequestUpdate() end
+end
+Polestar.OnLogin(refreshSupplies)
+for _, event in ipairs({"PLAYER_ENTERING_WORLD", "QUEST_LOG_UPDATE", "BAG_UPDATE_DELAYED",
+    "QUEST_ACCEPTED", "QUEST_REMOVED", "QUEST_TURNED_IN"}) do
+    Polestar.RegisterEvent(event, refreshSupplies)
+end
+Polestar.On("STEP_UPDATED", refreshSupplies)
+Polestar.On("STEP_CHANGED", refreshSupplies)
